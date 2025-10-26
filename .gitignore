@@ -2,3 +2,13 @@
 .venv
 .DS_Store
 db.sqlite3
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Dependency directories
+node_modules/
+jspm_packages/
+# Optional npm cache directory
+.npm

@@ -1,0 +1,30 @@
+[project]
+name = "thaldb"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "crispy-tailwind>=1.0.3",
+    "django>=5.2.7",
+    "django-widget-tweaks>=1.5.0",
+    "pillow>=12.0.0",
+]
+
+[dependency-groups]
+dev = [
+    "black>=25.9.0",
+    "django-debug-toolbar>=6.0.0",
+]
+[tool.black]
+line-length = 120
+target-version = ['py313']
+include = '\.pyi?$'
+exclude = '''
+/(
+    migrations
+  | \.venv
+  | build
+  | dist
+)/
+'''

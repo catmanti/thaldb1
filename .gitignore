@@ -1,0 +1,4 @@
+# Virtual environments
+.venv
+.DS_Store
+db.sqlite3

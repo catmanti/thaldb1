@@ -213,10 +213,9 @@ class ThalassemiaUnitAdmin(admin.ModelAdmin):
     search_fields = ("name",)
 
 
-# admin.register(Admission)
-# lass AdmissionAdmin(admin.ModelAdmin):
-#   list_display = ("client", "date_of_admission", "reason_for_admission", "date_of_discharge", "outcome")
-#   list_filter = ("outcome",)
-#   date_hierarchy = "date_of_admission"
-#   inlines = [TransfusionInline]
-#   search_fields = ("client__full_name", "reason_for_admission", "outcome")
+@admin.register(Admission)
+class AdmissionAdmin(admin.ModelAdmin):
+    list_display = ("client", "date_of_admission", "reason_for_admission", "date_of_discharge", "outcome")
+    list_filter = ("outcome",)
+    date_hierarchy = "date_of_admission"
+    search_fields = ("client__full_name", "reason_for_admission", "outcome")

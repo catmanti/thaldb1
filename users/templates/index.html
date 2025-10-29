@@ -1,9 +1,15 @@
 {% extends "base.html" %}
-{% load widget_tweaks %}
+{% load static widget_tweaks %}
 
 {% block title %}Home{% endblock %}
 
 {% block content %}
-
+{% include "navbar.html" %}
+<h1>Hello from htmx</h1>
+<p after="Hello World" class="after:content-[attr(after)] ...">
+    Click the button to load content via htmx.
+</p>
+    <button class="btn btn-primary" hx-get="{% url 'users:test' %}" hx-swap="outerHTML" hx-target="#message">Click me</button>
+    <div id="message"></div>
 
 {% endblock %}

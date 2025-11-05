@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Client List</h1>
+{% for client in clients %}
+    <p>{{ client.full_name }}</p>
+{% empty %}
+    <p>No clients found.</p>
+{% endfor %}
+{% endblock content %}

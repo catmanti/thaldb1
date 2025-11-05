@@ -18,5 +18,6 @@ def login_view(request):
         form = LoginForm()
     return render(request, "login.html", {"form": form})
 
+
 def test_view(request):
     return render(request, "test.html")

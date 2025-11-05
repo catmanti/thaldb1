@@ -1,4 +1,5 @@
-from .base import *
+from .base import *  # noqa: F403
+
 
 DEBUG = False
 
@@ -15,4 +16,4 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = BASE_DIR / "staticfiles" # noqa F405

@@ -1,13 +1,29 @@
 {% extends "base.html" %}
+{% load widget_tweaks %}
 {% block content %}
+{% include "navbar.html" %}
+<div class="max-w-3xl mx-auto bg-base-100 p-6 mt-8 rounded-2xl shadow">
+    <h2 class="text-2xl font-bold mb-4">Edit Client</h2>
+    <form method="post" class="space-y-4">
+        {% csrf_token %}
+        {% for field in form %}
+        <div>
+            <label class="block font-medium mb-1" for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {% if field.field.widget.input_type == "select" %}
+            {% render_field field class="select select-bordered w-full" %}
+            {% elif field.field.widget.input_type == "textarea" %}
+            {% render_field field class="textarea textarea-bordered w-full" %}
+            {% elif field.field.widget.input_type == "date" %}
+            {% render_field field class="input input-bordered w-full" type="date" %}
+            {% else %}
+            {% render_field field class="input input-bordered w-full" %}
+            {% endif %}
+            {% if field.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ field.errors|join:", " }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <button class="btn btn-primary" type="submit">Save</button>
+    </form>
 
-<h2>Add New Client</h2>
-
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-
-    <button type="submit">Save</button>
-</form>
-
-{% endblock %}
+    {% endblock %}

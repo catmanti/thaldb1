@@ -1,9 +1,32 @@
 {% extends "base.html" %}
+
 {% block content %}
-<h1>Client List</h1>
-{% for client in clients %}
-    <p>{{ client.full_name }}</p>
-{% empty %}
-    <p>No clients found.</p>
-{% endfor %}
+{% include "navbar.html" %}
+<div class="container mx-auto px-4">
+    <h1 class="text-2xl font-semibold mb-4">Client List</h1>
+    <div class="overflow-x-auto">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Reg-ID</th>
+                    <th>Full Name</th>
+                    <th>Gender</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            {% for cl in clients %}
+            <tbody>
+                <tr class="bg-base-200">
+                    <th>{{ forloop.counter }}</th>
+                    <td>{{ cl.registration_number }}</td>
+                    <td>{{ cl.full_name }}</td>
+                    <td>{{ cl.gender }}</td>
+                    <td><a href="{% url 'clients:client-update' cl.id %}" class="btn btn-primary btn-sm">Edit</a></td>
+                </tr>
+            </tbody>
+            {% endfor %}
+        </table>
+    </div>
+</div>
 {% endblock content %}

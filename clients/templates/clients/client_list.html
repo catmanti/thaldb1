@@ -3,9 +3,9 @@
 {% block content %}
 {% include "navbar.html" %}
 <div class="container mx-auto px-4">
-    <h1 class="text-2xl font-semibold mb-4">Client List</h1>
+    <h1 class="text-2xl font-semibold mb-4">Clients List</h1>
     <div class="overflow-x-auto">
-        <table class="table">
+        <table class="table table-zebra">
             <thead>
                 <tr>
                     <th>#</th>
@@ -17,7 +17,7 @@
             </thead>
             {% for cl in clients %}
             <tbody>
-                <tr class="bg-base-200">
+                <tr class="hover:bg-base-200">
                     <th>{{ forloop.counter }}</th>
                     <td>{{ cl.registration_number }}</td>
                     <td>{{ cl.full_name }}</td>

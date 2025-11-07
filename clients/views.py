@@ -9,7 +9,7 @@ from .models import Client
 class ClientFormView(FormView):
     template_name = "clients/client_form.html"
     form_class = ClientForm
-    success_url = reverse_lazy("client-success")
+    success_url = reverse_lazy("clients:client-list")
 
     def form_valid(self, form):
         # Save the Client record

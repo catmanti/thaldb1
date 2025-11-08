@@ -71,6 +71,10 @@ class DS_Division(models.Model):
     name = models.CharField(max_length=100, unique=True)
     district = models.ForeignKey(District, on_delete=models.CASCADE, related_name="ds_divisions")
 
+    class Meta:
+        verbose_name = "DS_Division"
+        verbose_name_plural = "DS_Divisions"
+
     def __str__(self):
         return self.name
 
@@ -199,7 +203,7 @@ class Client(models.Model):
     special_note = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.full_name} ({self.t_number})"
+        return f"{self.full_name} ({self.registration_number})"
 
 
 # -------------------------------------------------------------------

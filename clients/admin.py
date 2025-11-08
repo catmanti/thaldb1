@@ -1,6 +1,11 @@
 from django.contrib import admin
 from .models import (
     Client,
+    ClientDeath,
+    ClientTransfer,
+    Province,
+    District,
+    DS_Division,
     FamilyMember,
     Drug,
     Complication,
@@ -104,6 +109,38 @@ class ClientAdmin(admin.ModelAdmin):
 # ───────────────────────────────────────────────
 # REGISTER OTHER MODELS (for independent access)
 # ───────────────────────────────────────────────
+
+
+@admin.register(ClientDeath)
+class ClientDeathAdmin(admin.ModelAdmin):
+    list_display = ("client", "date_of_death", "cause_of_death")
+    search_fields = ("client__full_name", "cause_of_death")
+
+
+@admin.register(ClientTransfer)
+class ClientTransferAdmin(admin.ModelAdmin):
+    list_display = ("client", "date_of_transfer", "transferred_unit")
+    search_fields = ("client__full_name", "transferred_unit__name")
+
+
+@admin.register(Province)
+class ProvinceAdmin(admin.ModelAdmin):
+    list_display = ("name",)
+    search_fields = ("name",)
+
+
+@admin.register(District)
+class DistrictAdmin(admin.ModelAdmin):
+    list_display = ("name", "province")
+    list_filter = ("province",)
+    search_fields = ("name",)
+
+
+@admin.register(DS_Division)
+class DS_DivisionAdmin(admin.ModelAdmin):
+    list_display = ("name", "district")
+    list_filter = ("district",)
+    search_fields = ("name",)
 
 
 @admin.register(FamilyMember)

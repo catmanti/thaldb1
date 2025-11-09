@@ -11,6 +11,10 @@ He should be able to edit only his ThalassemiaUnit data.
 The dates like date_first_transfused, diagnosis_date, iron_chelation_started_date,  blood_transfusion_start_date
 should be able to calculated from approximate age.  Add a TextBox near it in the form.
 
+Change the ThalassemiaUnit to thalassemia_unit
+
+## In Production:
+
 On your droplet:
 
 In your Gunicorn systemd service file (/etc/systemd/system/gunicorn.service),
@@ -23,3 +27,13 @@ Then restart:
 
 sudo systemctl daemon-reload
 sudo systemctl restart gunicorn
+
+## Test only a One test:
+
+uv run manage.py test clients.tests.FamilyMemberOnDeleteTest.test_diagnosis_set_null_when_deleted
+
+- Below will run all the tests in that test class:
+uv run manage.py test clients.tests.FamilyMemberOnDeleteTest
+
+- To display all the test names:
+uv run manage.py test clients --pattern="tests.py" -v 2

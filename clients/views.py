@@ -2,6 +2,7 @@ from django.views.generic.edit import FormView
 from django.views.generic import ListView
 from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .form import ClientForm
 from .models import Client
 
@@ -17,7 +18,8 @@ class ClientFormView(FormView):
         return super().form_valid(form)
 
 
-class ClientListView(ListView):
+# Need login required mixin for production
+class ClientListView(LoginRequiredMixin, ListView):
     model = Client
     template_name = "clients/client_list.html"
     context_object_name = "clients"

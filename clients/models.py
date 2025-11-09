@@ -203,7 +203,7 @@ class Client(models.Model):
     special_note = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.full_name} ({self.registration_number})"
+        return f"{self.registration_number} : {self.full_name}"
 
 
 # -------------------------------------------------------------------

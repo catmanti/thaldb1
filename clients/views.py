@@ -7,7 +7,7 @@ from .form import ClientForm
 from .models import Client
 
 
-class ClientFormView(FormView):
+class ClientFormView(LoginRequiredMixin, FormView):
     template_name = "clients/client_form.html"
     form_class = ClientForm
     success_url = reverse_lazy("clients:client-list")
@@ -18,7 +18,6 @@ class ClientFormView(FormView):
         return super().form_valid(form)
 
 
-# Need login required mixin for production
 class ClientListView(LoginRequiredMixin, ListView):
     model = Client
     template_name = "clients/client_list.html"
@@ -28,7 +27,7 @@ class ClientListView(LoginRequiredMixin, ListView):
         return Client.objects.all().order_by("full_name")
 
 
-class ClientUpdateView(UpdateView):
+class ClientUpdateView(LoginRequiredMixin, UpdateView):
     model = Client
     form_class = ClientForm
     template_name = "clients/client_form.html"

@@ -4,7 +4,8 @@ from django.urls import reverse
 from users.models import CustomUser as User
 from django.test import TestCase, SimpleTestCase
 from django.urls import resolve
-from clients.views import ClientListView
+from clients.views import ClientListView, ClientUpdateView, ClientFormView
+from users.views import index, login_view
 from clients.models import Client, District, DS_Division, Province, Choice, ThalassemiaUnit, FamilyMember, DiagnosisType
 from clients.form import ClientForm
 
@@ -133,20 +134,23 @@ class ClientViewTest(TestCase):
         self.province = Province.objects.create(name="Northwestern")
         self.district = District.objects.create(name="Kurunegala", province=self.province)
         self.ds_division = DS_Division.objects.create(name="Polpithigama", district=self.district)
+        self.user = User.objects.create_user(username="testuser", password="pass123")
         self.client_obj = Client.objects.create(
             registration_number="T-501", full_name="Saman", ds_division=self.ds_division
         )
 
     def test_client_list_view(self):
+        self.client.login(username="testuser", password="pass123")
         url = reverse("clients:client-list")
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 302)  # redirect to login
-        # self.assertContains(response, "Saman")
+        self.assertEqual(response.status_code, 200)  # redirect to login
+        self.assertContains(response, "Saman")
 
     def test_client_detail_view(self):
+        self.client.login(username="testuser", password="pass123")
         url = reverse("clients:client-update", args=[self.client_obj.id])
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)  # redirect to login
         self.assertContains(response, "Saman")
 
 
@@ -183,8 +187,16 @@ class ClientURLTest(SimpleTestCase):
         url = reverse("clients:client-list")
         self.assertEqual(resolve(url).func.view_class, ClientListView)
 
+    def test_client_update_url_resolves(self):
+        url = reverse("clients:client-update", args=[1])
+        self.assertEqual(resolve(url).func.view_class, ClientUpdateView)
 
-class ClientAuthTest(TestCase):
+    def test_client_add_url_resolves(self):
+        url = reverse("clients:client-add")
+        self.assertEqual(resolve(url).func.view_class, ClientFormView)
+
+
+class ClientAuthTest1(TestCase):
     def setUp(self):
         self.url = reverse("clients:client-list")
         self.user = User.objects.create_user(username="testuser", password="pass123")
@@ -197,3 +209,15 @@ class ClientAuthTest(TestCase):
         self.client.login(username="testuser", password="pass123")
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
+
+
+class ClientAuthTest2(TestCase):
+    def setUp(self):
+        self.url = reverse("clients:client-list")  # protected page
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(self.url)
+        # 1️⃣ Check for redirect
+        self.assertEqual(response.status_code, 302)
+        # 2️⃣ Check destination URL
+        self.assertRedirects(response, f"/accounts/login/?next={self.url}")

@@ -14,6 +14,8 @@ should be able to calculated from approximate age.  Add a TextBox near it in the
 Change the ThalassemiaUnit to thalassemia_unit
 
 ## In Production:
+make sure in manage.py to change 'prod':
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "thallk.settings.prod")
 
 On your droplet:
 

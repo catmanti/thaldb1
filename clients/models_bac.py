@@ -33,11 +33,14 @@ class DrugName(models.Model):
     """
 
     name = models.CharField(max_length=100, unique=True)
-    does = models.CharField(max_length=50, blank=True, null=True)
+    dose = models.CharField(max_length=50, blank=True, null=True)
     regimen = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ["name"]
 
 
 class Province(models.Model):
@@ -49,6 +52,9 @@ class Province(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ["name"]
 
 
 class District(models.Model):
@@ -62,6 +68,9 @@ class District(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ["name"]
+
 
 class DS_Division(models.Model):
     """
@@ -72,8 +81,7 @@ class DS_Division(models.Model):
     district = models.ForeignKey(District, on_delete=models.CASCADE, related_name="ds_divisions")
 
     class Meta:
-        verbose_name = "DS_Division"
-        verbose_name_plural = "DS_Divisions"
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
@@ -81,7 +89,7 @@ class DS_Division(models.Model):
 
 class ThalassemiaUnit(models.Model):
     """
-    Store Thalassmia units.
+    Store Thalassaemia units.
     """
 
     name = models.CharField(max_length=100, unique=True)
@@ -103,6 +111,9 @@ class DiagnosisType(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ["name"]
 
 
 class ComplicationType(models.Model):
@@ -191,9 +202,10 @@ class Client(models.Model):
     guardian_name_2 = models.CharField(max_length=100, blank=True, null=True)
     guardian_contact_number_1 = models.CharField(max_length=20, blank=True, null=True)
     guardian_contact_number_2 = models.CharField(max_length=20, blank=True, null=True)
-    diagnosis = models.ForeignKey(
-        DiagnosisType, on_delete=models.SET_NULL, null=True, blank=True, related_name="clients_diagnosis"
-    )
+    # --- TODO DELETE LATER? ---
+    # diagnosis = models.ForeignKey(
+    #     DiagnosisType, on_delete=models.SET_NULL, null=True, blank=True, related_name="clients_diagnosis"
+    # )
     diagnosis_date = models.DateField(blank=True, null=True)
     HB_level_at_diagnosis = models.DecimalField(max_digits=4, decimal_places=1, blank=True, null=True)
     date_first_transfused = models.DateField(blank=True, null=True)
@@ -205,9 +217,12 @@ class Client(models.Model):
     def __str__(self):
         return f"{self.registration_number} : {self.full_name}"
 
+    class Meta:
+        ordering = ["full_name"]
+
 
 # -------------------------------------------------------------------
-#                      DETH RECORD
+#                      DEATH RECORD
 # -------------------------------------------------------------------
 class ClientDeath(models.Model):
     """Stores client death details."""
@@ -286,7 +301,7 @@ class Drug(models.Model):
 class Complication(models.Model):
     """CLIENT'S COMPLICATIONS"""
 
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name="complications")
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name="client_complications")
     complication = models.ForeignKey(ComplicationType, on_delete=models.SET_NULL, null=True)
 
     detected_date = models.DateField()
@@ -324,7 +339,7 @@ class Vaccination(models.Model):
 class Admission(models.Model):
     """HOSPITAL ADMISSIONS"""
 
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name="admissions")
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name="client_admissions")
     date_of_admission = models.DateField()
     reason_for_admission = models.TextField(default="Blood Transfusion")
     date_of_discharge = models.DateField(blank=True, null=True)
@@ -338,7 +353,7 @@ class Transfusion(models.Model):
     """BLOOD TRANSFUSIONS"""
 
     # Client of the transfusion is the client of the admission
-    admission = models.ForeignKey(Admission, on_delete=models.CASCADE, related_name="transfusions")
+    admission = models.ForeignKey(Admission, on_delete=models.CASCADE, related_name="blood_transfusions")
     date_of_transfusion = models.DateField()
     HB_level_to_be_kept = models.DecimalField(max_digits=4, decimal_places=1, blank=True, null=True, default=9.0)
     HB_level = models.DecimalField(max_digits=4, decimal_places=1, blank=True, null=True)
@@ -385,7 +400,7 @@ class ClinicVisit(models.Model):
 class Investigation(models.Model):
     """INVESTIGATIONS"""
 
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name="investigations")
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name="client_investigations")
     date_done = models.DateField()
     investigation_type = models.ForeignKey(InvestigationType, on_delete=models.SET_NULL, blank=True, null=True)
     value = models.CharField(max_length=100, blank=True, null=True)

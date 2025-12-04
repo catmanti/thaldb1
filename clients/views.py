@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .form import ClientForm
-from .models import Client
+from .models.client import Client
 
 
 class ClientFormView(LoginRequiredMixin, FormView):

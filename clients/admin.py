@@ -1,26 +1,33 @@
 from django.contrib import admin
-from .models import (
+from .models.client import (
     Client,
     ClientDeath,
     ClientTransfer,
+    FamilyMember,
+)
+from .models.drug import (
+    DrugName,
+    Drug
+)
+from .models.management import (
+    Complication,
+    Vaccination,
+    ComplicationType,
+    # VaccinationType,
+    InvestigationType,
+    Investigation,
+    ClinicVisit,
+    GrowthRecord,
+    Admission,
+    Transfusion,
+)
+from .models.lookup import (
     Province,
     District,
     DS_Division,
-    FamilyMember,
-    Drug,
-    Complication,
-    Vaccination,
-    Transfusion,
-    ClinicVisit,
-    Investigation,
-    GrowthRecord,
-    Choice,
-    DiagnosisType,
-    InvestigationType,
-    DrugName,
-    ComplicationType,
     ThalassemiaUnit,
-    Admission,
+    DiagnosisType,
+    Choice
 )
 
 # ───────────────────────────────────────────────

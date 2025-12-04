@@ -5,8 +5,9 @@ from users.models import CustomUser as User
 from django.test import TestCase, SimpleTestCase
 from django.urls import resolve
 from clients.views import ClientListView, ClientUpdateView, ClientFormView
-from users.views import index, login_view
-from clients.models import Client, District, DS_Division, Province, Choice, ThalassemiaUnit, FamilyMember, DiagnosisType
+# from users.views import index, login_view
+from clients.models.client import Client, FamilyMember
+from clients.models.lookup import District, DS_Division, Province, Choice, ThalassemiaUnit, DiagnosisType
 from clients.form import ClientForm
 
 

@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% include "navbar.html" %}
 <div class="container mx-auto px-4">
     <h1 class="text-2xl font-semibold mb-4">Clients List</h1>
     <div class="overflow-x-auto">
@@ -13,6 +12,7 @@
                     <th>Full Name</th>
                     <th>Gender</th>
                     <th>Edit</th>
+                    <th>View</th>
                 </tr>
             </thead>
             {% for cl in clients %}
@@ -23,6 +23,7 @@
                     <td>{{ cl.full_name }}</td>
                     <td>{{ cl.gender }}</td>
                     <td><a href="{% url 'clients:client-update' cl.id %}" class="btn btn-primary btn-sm">Edit</a></td>
+                    <td><a href="{% url 'clients:client-detail' cl.id %}" class="btn btn-primary btn-sm">View</a></td>
                 </tr>
             </tbody>
             {% endfor %}

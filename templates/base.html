@@ -12,7 +12,9 @@
   </head>
 
   <body class="min-h-screen bg-base-300" x-data="{ theme: 'light' }" :data-theme="theme">
-
+    {% block navbar %}
+      {% include "navbar.html" %}
+    {% endblock navbar %}
     {% block content %} {% endblock %}
 
   </body>

@@ -1,4 +1,7 @@
 from django.db import models
+from datetime import date
+from django.utils import timezone
+from dateutil.relativedelta import relativedelta
 from .lookup import ThalassemiaUnit, DiagnosisType, DS_Division
 
 
@@ -77,6 +80,35 @@ class Client(models.Model):
 
     def __str__(self):
         return f"{self.registration_number} : {self.full_name}"
+
+    @property
+    def age(self):
+        today = date.today()
+        years = today.year - self.date_of_birth.year
+        # correct the birthdays that not yet occurs this year
+        if (today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day):
+            years -= 1
+        return years
+
+    @property
+    def precise_age(self):
+        # Get today's date in a timezone-aware format (optional, but good practice)
+        today = timezone.localdate()
+
+        # Calculate the difference using relativedelta
+        diff = relativedelta(today, self.date_of_birth)
+
+        # The result is an object with .years, .months, and .days attributes
+        return {
+            'years': diff.years,
+            'months': diff.months,
+            'days': diff.days
+        }
+
+    @property
+    def age_string(self):
+        age_data = self.precise_age
+        return f"{age_data['years']} years, {age_data['months']} months, and {age_data['days']} days"
 
     class Meta:
         ordering = ["full_name"]

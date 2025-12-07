@@ -39,3 +39,10 @@ uv run manage.py test clients.tests.FamilyMemberOnDeleteTest
 
 - To display all the test names:
 uv run manage.py test clients --pattern="tests.py" -v 2
+
+## TODO
+Add HB_level_to_be_kept in both client and Transfution (alrady added) models. Then programally add it to Transfution
+model from client model.
+Add same for:
+    Amount_of_blood;
+    Special Type of Bood;

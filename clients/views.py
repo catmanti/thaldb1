@@ -1,6 +1,7 @@
 from django.views.generic.edit import FormView
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404
 from django.views.generic.edit import UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .form import ClientForm
@@ -32,3 +33,16 @@ class ClientUpdateView(LoginRequiredMixin, UpdateView):
     form_class = ClientForm
     template_name = "clients/client_form.html"
     success_url = reverse_lazy("clients:client-list")
+
+
+class ClientDetailView(LoginRequiredMixin, DetailView):
+    model = Client
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        client = get_object_or_404(Client, pk=self.kwargs['pk'])
+        context['admissions'] = (
+            client.client_admissions.all()
+            .order_by('-date_of_admission')
+        )
+        return context

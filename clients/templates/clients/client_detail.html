@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4">
+    <p>Registration No: {{client.registration_number}}</p>
+    <h1>Client Name: {{client.full_name}}</h1>
+    <p>Gender: {% if client.gender == "M" %}Male{% else %}Female{% endif %}</p>
+    <p>Date of birth: {{client.date_of_birth}}</p>
+    <p>Age: {{client.age}}</p>
+    <p>Total Age: {{client.age_string}}</p>
+    <h2 class="text-2xl font-semibold mt-6 mb-4">Admissions</h2>
+    <div class="overflow-x-auto">
+        <table class="table table-zebra w-full">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Admission Date</th>
+                    <th>Discharge Date</th>
+                    <th>Reason</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for admission in admissions %}
+                <tr class="hover:bg-base-200">
+                    <th>{{ forloop.counter }}</th>
+                    <td>{{ admission.date_of_admission|date:"D d M Y" }}</td>
+                    <td>{{ admission.date_of_discharge|date:"D d M Y"|default:"N/A" }}</td>
+                    <td>{{ admission.reason_for_admission }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">No admissions found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a href="{% url 'clients:client-list' %}" class="btn btn-primary btn-sm"><i class="fa fa-list">⏪</i> View All
+    </a>
+</div>
+{% endblock content %}

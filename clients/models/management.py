@@ -114,7 +114,7 @@ class Transfusion(models.Model):
         "Choice",
         on_delete=models.SET_NULL,
         null=True,
-        limit_choices_to={"category": "special_blood_type"},
+        limit_choices_to={"category": "special_blood_type"}, blank=True
     )
     next_date_given = models.DateField(blank=True, null=True)
     reaction = models.CharField(max_length=200, blank=True, null=True, default="None")

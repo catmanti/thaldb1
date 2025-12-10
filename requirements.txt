@@ -17,3 +17,4 @@ pillow==12.0.0
     # via thaldb (pyproject.toml)
 sqlparse==0.5.3
     # via django
+python-dateutil==2.9.0

@@ -8,34 +8,20 @@
     <p>Date of birth: {{client.date_of_birth}}</p>
     <p>Age: {{client.age}}</p>
     <p>Total Age: {{client.age_string}}</p>
-    <h2 class="text-2xl font-semibold mt-6 mb-4">Admissions</h2>
-    <div class="overflow-x-auto">
-        <table class="table table-zebra w-full">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Admission Date</th>
-                    <th>Discharge Date</th>
-                    <th>Reason</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for admission in admissions %}
-                <tr class="hover:bg-base-200">
-                    <th>{{ forloop.counter }}</th>
-                    <td>{{ admission.date_of_admission|date:"D d M Y" }}</td>
-                    <td>{{ admission.date_of_discharge|date:"D d M Y"|default:"N/A" }}</td>
-                    <td>{{ admission.reason_for_admission }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="5" class="text-center">No admissions found.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="tabs tabs-lift mt-4">
+        <input type="radio" name="my_tabs_3" class="tab" aria-label="admissions" checked="checked" />
+        <div id="admissions" class="tab-content bg-base-100 border-base-300 p-6" hx-trigger="load"
+            hx-get="{% url 'clients:client-admission-list' client.pk %}" hx-target="#admissions" hx-swap="innerHTML">
+            Loading...
+        </div>
+
+        <input type="radio" name="my_tabs_3" class="tab" aria-label="Transfusions" />
+        <div class="tab-content bg-base-100 border-base-300 p-6">Tab content 2</div>
+
+        <input type="radio" name="my_tabs_3" class="tab" aria-label="Investigations" />
+        <div class="tab-content bg-base-100 border-base-300 p-6">Tab content 3</div>
     </div>
     <a href="{% url 'clients:client-list' %}" class="btn btn-primary btn-sm"><i class="fa fa-list">⏪</i> View All
+        clients
     </a>
-</div>
-{% endblock content %}
+    {% endblock content %}

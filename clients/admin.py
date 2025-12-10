@@ -55,7 +55,7 @@ class VaccinationInline(admin.TabularInline):
     extra = 1
 
 
-# lass TransfusionInline(admin.TabularInline):
+# class TransfusionInline(admin.TabularInline):
 #   model = Transfusion
 #   extra = 1
 

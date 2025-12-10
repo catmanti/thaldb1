@@ -46,3 +46,11 @@ model from client model.
 Add same for:
     Amount_of_blood;
     Special Type of Bood;
+
+## TODO
+Check:
+    Drug regimen and duration
+    Growth Records
+    Investigation Types
+
+

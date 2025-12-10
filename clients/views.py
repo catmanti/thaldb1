@@ -46,3 +46,14 @@ class ClientDetailView(LoginRequiredMixin, DetailView):
             .order_by('-date_of_admission')
         )
         return context
+
+
+# Get a single client's admission records ordered by date_of_admission descending
+class AdmissionListView(LoginRequiredMixin, ListView):
+    model = Client
+    template_name = "clients/client_admission_list.html"
+    context_object_name = "admissions"
+
+    def get_queryset(self):
+        client = get_object_or_404(Client, pk=self.kwargs['pk'])
+        return client.client_admissions.all().order_by('-date_of_admission')

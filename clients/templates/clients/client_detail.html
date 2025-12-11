@@ -16,7 +16,11 @@
         </div>
 
         <input type="radio" name="my_tabs_3" class="tab" aria-label="Transfusions" />
-        <div class="tab-content bg-base-100 border-base-300 p-6">Tab content 2</div>
+        <div id="transfusions" class="tab-content bg-base-100 border-base-300 p-6" hx-trigger="load"
+            hx-get="{% url 'clients:client-transfusion-list' client.pk %}" hx-target="#transfusions"
+            hx-swap="innerHTML">
+            Loading...
+        </div>
 
         <input type="radio" name="my_tabs_3" class="tab" aria-label="Investigations" />
         <div class="tab-content bg-base-100 border-base-300 p-6">Tab content 3</div>

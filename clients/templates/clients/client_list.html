@@ -21,7 +21,7 @@
                     <th>{{ forloop.counter }}</th>
                     <td>{{ cl.registration_number }}</td>
                     <td>{{ cl.full_name }}</td>
-                    <td>{{ cl.gender }}</td>
+                    <td>{% if cl.gender == "M" %}Male{% else %}Female{% endif %}</td>
                     <td><a href="{% url 'clients:client-update' cl.id %}" class="btn btn-primary btn-sm">Edit</a></td>
                     <td><a href="{% url 'clients:client-detail' cl.id %}" class="btn btn-primary btn-sm">View</a></td>
                 </tr>

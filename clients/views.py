@@ -6,6 +6,7 @@ from django.views.generic.edit import UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .form import ClientForm
 from .models.client import Client
+from .models.management import Transfusion
 
 
 class ClientFormView(LoginRequiredMixin, FormView):
@@ -57,3 +58,23 @@ class AdmissionListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         client = get_object_or_404(Client, pk=self.kwargs['pk'])
         return client.client_admissions.all().order_by('-date_of_admission')
+
+
+# Get a single client's trnsfusion records ordered by date_of_transfusion descending
+class TransfusionListView(LoginRequiredMixin, ListView):
+    model = Client
+    template_name = "clients/client_transfusion_list.html"
+    context_object_name = "transfusions"
+
+    def get_queryset(self):
+        client = get_object_or_404(Client, pk=self.kwargs['pk'])
+        return Transfusion.objects.filter(admission__client__id=client.id).order_by('-date_of_transfusion')
+
+
+def test_view(request):
+    from django.http import HttpResponse
+    transfusion = Transfusion.objects.filter(admission__client__id=1).order_by('-date_of_transfusion')
+    records = []
+    for t in transfusion:
+        records.append(f"Transfusion on {t.date_of_transfusion} - {t.admission.client.full_name}")
+    return HttpResponse("Transfusion records: ".join(records))

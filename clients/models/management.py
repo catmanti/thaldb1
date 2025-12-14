@@ -54,6 +54,7 @@ class InvestigationType(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True, null=True)
     unit = models.CharField(max_length=50, blank=True, null=True)
+    # Add Refence Range
 
     def __str__(self):
         return self.name
@@ -66,7 +67,7 @@ class Investigation(models.Model):
     date_done = models.DateField()
     investigation_type = models.ForeignKey(InvestigationType, on_delete=models.SET_NULL, blank=True, null=True)
     value = models.CharField(max_length=100, blank=True, null=True)
-    unit = models.CharField(max_length=20, blank=True, null=True)
+    unit = models.CharField(max_length=20, blank=True, null=True)  # TODO: Redundant if InvestigationType has unit
     laboratory_name = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):

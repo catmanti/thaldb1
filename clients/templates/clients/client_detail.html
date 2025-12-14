@@ -9,7 +9,7 @@
     <p>Age: {{client.age}}</p>
     <p>Total Age: {{client.age_string}}</p>
     <div class="tabs tabs-lift mt-4">
-        <input type="radio" name="my_tabs_3" class="tab" aria-label="admissions" checked="checked" />
+        <input type="radio" name="my_tabs_3" class="tab" aria-label="Admissions" checked="checked" />
         <div id="admissions" class="tab-content bg-base-100 border-base-300 p-6" hx-trigger="load"
             hx-get="{% url 'clients:client-admission-list' client.pk %}" hx-target="#admissions" hx-swap="innerHTML">
             Loading...
@@ -23,9 +23,14 @@
         </div>
 
         <input type="radio" name="my_tabs_3" class="tab" aria-label="Investigations" />
-        <div class="tab-content bg-base-100 border-base-300 p-6">Tab content 3</div>
+        <div id="investigations" class="tab-content bg-base-100 border-base-300 p-6" hx-trigger="load"
+            hx-get="{% url 'clients:client-investigation-list' client.pk %}" hx-target="#investigations"
+            hx-swap="innerHTML">
+            Loading...
+        </div>
     </div>
     <a href="{% url 'clients:client-list' %}" class="btn btn-primary btn-sm"><i class="fa fa-list">⏪</i> View All
         clients
     </a>
-    {% endblock content %}
+</div>
+{% endblock content %}

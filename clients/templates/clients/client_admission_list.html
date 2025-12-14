@@ -1,26 +1,36 @@
-    <div >
-        <table class="table table-zebra w-full">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Admission Date</th>
-                    <th>Discharge Date</th>
-                    <th>Reason</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for admission in admissions %}
-                <tr class="hover:bg-base-200">
-                    <th>{{ forloop.counter }}</th>
-                    <td>{{ admission.date_of_admission|date:"D d M Y" }}</td>
-                    <td>{{ admission.date_of_discharge|date:"D d M Y"|default:"N/A" }}</td>
-                    <td>{{ admission.reason_for_admission }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="5" class="text-center">No admissions found.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+<div class="overflow-x-auto" >
+    <table class="table table-zebra w-full">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Admission Date</th>
+                <th>Discharge Date</th>
+                <th>Reason</th>
+                <th>Update</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for admission in admissions %}
+            <tr class="hover:bg-base-200">
+                <th>{{ forloop.counter }}</th>
+                <td>{{ admission.date_of_admission|date:"D d M Y" }}</td>
+                <td>{{ admission.date_of_discharge|date:"D d M Y"|default:"N/A" }}</td>
+                <td>{{ admission.reason_for_admission }}</td>
+                <td><button class="btn btn-primary btn-sm"
+                        hx-get="{% url 'clients:client-admission-update' admission.pk %}" hx-target="#admission_modal"
+                        hx-swap="innerHTML">
+                        Update
+                    </button>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center">No admissions found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <dialog id="admission_modal" class="modal" hx-on::after-settle="admission_modal.showModal()">
+    </dialog>
+
+</div>

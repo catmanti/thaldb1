@@ -7,7 +7,9 @@ urlpatterns = [
     path("update/<int:pk>", views.ClientUpdateView.as_view(), name="client-update"),
     path("detail/<int:pk>", views.ClientDetailView.as_view(), name="client-detail"),
     path("admissions/<int:pk>", views.AdmissionListView.as_view(), name="client-admission-list"),
+    path("admission/update/<int:pk>", views.AdmissionUpdateView.as_view(), name="client-admission-update"),
     path("transfusions/<int:pk>", views.TransfusionListView.as_view(), name="client-transfusion-list"),
+    path("investigations/<int:pk>", views.InvestigationListView.as_view(), name="client-investigation-list"),
     path("", views.ClientListView.as_view(), name="client-list"),
     path("test/", views.test_view, name="client-test"),
 ]

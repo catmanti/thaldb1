@@ -1,0 +1,16 @@
+<div class="modal-box">
+    <h3 class="font-bold text-lg">Update Admission</h3>
+
+    <form method="post" action="{% url 'clients:client-admission-update' object.pk %}">
+
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary btn-sm">Save</button>
+    </form>
+
+    <div class="modal-action">
+        <form method="dialog">
+            <button class="btn">Close</button>
+        </form>
+    </div>
+</div>

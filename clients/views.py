@@ -44,7 +44,7 @@ class ClientDetailView(LoginRequiredMixin, DetailView):
         client = get_object_or_404(Client, pk=self.kwargs['pk'])
         context['admissions'] = (
             client.client_admissions.all()
-            .order_by('-date_of_admission')
+            .order_by('-date_of_admission')[:4]
         )
         return context
 

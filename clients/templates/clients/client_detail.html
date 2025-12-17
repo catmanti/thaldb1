@@ -21,9 +21,8 @@
 
     <div class="tabs tabs-lift mt-4">
         <input type="radio" name="my_tabs_3" class="tab" aria-label="Admissions" checked="checked" />
-        <div id="admissions" class="tab-content bg-base-100 border-base-300 p-6" hx-trigger="load"
-            hx-get="{% url 'clients:client-admission-list' client.pk %}" hx-target="#admissions" hx-swap="innerHTML">
-            Loading...
+        <div id="admissions" class="tab-content bg-base-100 border-base-300 p-6" >
+            {% include 'clients/client_admission_list.html' with admissions=admissions client_id=client.pk %}
         </div>
 
         <input type="radio" name="my_tabs_3" class="tab" aria-label="Transfusions" />

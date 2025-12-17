@@ -49,16 +49,6 @@ class ClientDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-# # Get a single client's admission records ordered by date_of_admission descending
-# class AdmissionListView(LoginRequiredMixin, ListView):
-#     model = Client
-#     template_name = "clients/client_admission_list.html"
-#     context_object_name = "admissions"
-
-#     def get_queryset(self):
-#         client = get_object_or_404(Client, pk=self.kwargs['pk'])
-#         return client.client_admissions.all().order_by('-date_of_admission')
-
 class AdmissionListView(LoginRequiredMixin, ListView):
     model = Admission
     template_name = "clients/client_admission_list.html"
@@ -85,9 +75,9 @@ class AdmissionCreateView(LoginRequiredMixin, CreateView):
         initial["client"] = self.kwargs["pk"]   # pre-fill but hidden
         return initial
 
-    def form_valid(self, form):
-        form.instance.client_id = self.kwargs["pk"]  # attach client
-        return super().form_valid(form)
+    # def form_valid(self, form):
+    #     form.instance.client_id = self.kwargs["pk"]  # attach client
+    #     return super().form_valid(form)
 
 
 class AdmissionUpdateView(LoginRequiredMixin, UpdateView):

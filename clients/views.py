@@ -2,7 +2,7 @@ from django.views.generic.edit import FormView
 from django.views.generic import ListView, DetailView
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .form import ClientForm, AdmissionForm
 from .models.client import Client
@@ -49,15 +49,45 @@ class ClientDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-# Get a single client's admission records ordered by date_of_admission descending
+# # Get a single client's admission records ordered by date_of_admission descending
+# class AdmissionListView(LoginRequiredMixin, ListView):
+#     model = Client
+#     template_name = "clients/client_admission_list.html"
+#     context_object_name = "admissions"
+
+#     def get_queryset(self):
+#         client = get_object_or_404(Client, pk=self.kwargs['pk'])
+#         return client.client_admissions.all().order_by('-date_of_admission')
+
 class AdmissionListView(LoginRequiredMixin, ListView):
-    model = Client
+    model = Admission
     template_name = "clients/client_admission_list.html"
     context_object_name = "admissions"
 
     def get_queryset(self):
-        client = get_object_or_404(Client, pk=self.kwargs['pk'])
-        return client.client_admissions.all().order_by('-date_of_admission')
+        return Admission.objects.filter(
+            client_id=self.kwargs["pk"]
+        ).order_by("-date_of_admission")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["client_id"] = self.kwargs["pk"]
+        return context
+
+
+class AdmissionCreateView(LoginRequiredMixin, CreateView):
+    model = Admission
+    form_class = AdmissionForm
+    template_name = "clients/client_admission_form.html"
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial["client"] = self.kwargs["pk"]   # pre-fill but hidden
+        return initial
+
+    def form_valid(self, form):
+        form.instance.client_id = self.kwargs["pk"]  # attach client
+        return super().form_valid(form)
 
 
 class AdmissionUpdateView(LoginRequiredMixin, UpdateView):

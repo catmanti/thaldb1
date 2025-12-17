@@ -1,5 +1,6 @@
 from django.db import models
 from .client import Client
+from django.urls import reverse
 
 
 class ComplicationType(models.Model):
@@ -98,6 +99,10 @@ class Admission(models.Model):
 
     def __str__(self):
         return f"Admission on {self.date_of_admission} - {self.client.full_name}"
+
+    def get_absolute_url(self):
+        """Return the client detail URL after admission operations."""
+        return reverse("clients:client-detail", kwargs={"pk": self.client.pk})
 
 
 class Transfusion(models.Model):

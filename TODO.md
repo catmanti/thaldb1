@@ -6,6 +6,8 @@ Project Description
 
 ### Todo
 
+- [ ] Update Client line wise  
+- [ ] Add client form CSS and Modal  
 - [ ] Trasfution Add/Edit  
 - [ ] Remove Investigation Unit from Investigations  
 - [ ] Add Reference Range at Inv Type  

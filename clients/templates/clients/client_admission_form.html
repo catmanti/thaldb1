@@ -1,16 +1,40 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% block content %}
 <div class="modal-box">
     <h3 class="font-bold text-lg">Update Admission</h3>
 
-    <form method="post" action="{% url 'clients:client-admission-update' object.pk %}">
+    <form method="post" action="{% if object %}
+            {% url 'clients:client-admission-update' object.pk %}
+            {% else %}
+            {% url 'clients:client-admission-create' view.kwargs.pk %}
+            {% endif %}">
 
         {% csrf_token %}
-        {{ form.as_p }}
-        <button class="btn btn-primary btn-sm">Save</button>
+        {% for field in form %}
+        <div class="mb-4">
+            <label class="block font-medium mb-1" for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {% if field.field.widget.input_type == "select" %}
+            {% render_field field class="select select-bordered w-full" %}
+            {% elif field.field.widget.input_type == "textarea" %}
+            {% render_field field class="textarea textarea-bordered w-full" %}
+            {% elif field.field.widget.input_type == "date" %}
+            {% render_field field class="input input-bordered w-full" type="date" %}
+            {% else %}
+            {% render_field field class="input input-bordered w-full" %}
+            {% endif %}
+            {% if field.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ field.errors|join:", " }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <button class="btn btn-success btn-sm">Save</button>
     </form>
 
     <div class="modal-action">
         <form method="dialog">
-            <button class="btn">Close</button>
+            <button class="btn btn-ghost btn-sm">Close</button>
         </form>
     </div>
 </div>
+{% endblock %}

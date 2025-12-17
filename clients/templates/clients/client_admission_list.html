@@ -1,4 +1,9 @@
 <div class="overflow-x-auto" >
+    <a hx-get="{% url 'clients:client-admission-create' client_id %}" hx-target="#admission_modal" hx-trigger="click" hx-swap="innerHTML"
+   class="btn btn-accent btn-sm">
+    + Add Admission
+</a>
+
     <table class="table table-zebra w-full">
         <thead>
             <tr>
@@ -16,7 +21,7 @@
                 <td>{{ admission.date_of_admission|date:"D d M Y" }}</td>
                 <td>{{ admission.date_of_discharge|date:"D d M Y"|default:"N/A" }}</td>
                 <td>{{ admission.reason_for_admission }}</td>
-                <td><button class="btn btn-primary btn-sm"
+                <td><button class="btn btn-secondary btn-xs"
                         hx-get="{% url 'clients:client-admission-update' admission.pk %}" hx-target="#admission_modal"
                         hx-swap="innerHTML">
                         Update

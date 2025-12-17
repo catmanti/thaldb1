@@ -2,12 +2,23 @@
 
 {% block content %}
 <div class="container mx-auto px-4">
-    <p>Registration No: {{client.registration_number}}</p>
-    <h1>Client Name: {{client.full_name}}</h1>
-    <p>Gender: {% if client.gender == "M" %}Male{% else %}Female{% endif %}</p>
-    <p>Date of birth: {{client.date_of_birth}}</p>
-    <p>Age: {{client.age}}</p>
-    <p>Total Age: {{client.age_string}}</p>
+    <div class="card bg-base-100 shadow-md my-4">
+        <div class="card-body">
+            <h2 class="card-title text-xl font-semibold mb-2">
+                {{ client.full_name }}
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <p><span class="font-semibold">Registration No:</span> {{ client.registration_number }}</p>
+                <p><span class="font-semibold">Gender:</span>
+                    {% if client.gender == "M" %}Male{% else %}Female{% endif %}
+                </p>
+                <p><span class="font-semibold">Date of Birth:</span> {{ client.date_of_birth }}</p>
+                <p><span class="font-semibold">Age:</span> {{ client.age_string }}</p>
+            </div>
+        </div>
+    </div>
+
     <div class="tabs tabs-lift mt-4">
         <input type="radio" name="my_tabs_3" class="tab" aria-label="Admissions" checked="checked" />
         <div id="admissions" class="tab-content bg-base-100 border-base-300 p-6" hx-trigger="load"
@@ -29,7 +40,7 @@
             Loading...
         </div>
     </div>
-    <a href="{% url 'clients:client-list' %}" class="btn btn-primary btn-sm"><i class="fa fa-list">⏪</i> View All
+    <a href="{% url 'clients:client-list' %}" class="btn btn-primary btn-sm mt-4"><i class="fa fa-list">⏪</i> View All
         clients
     </a>
 </div>

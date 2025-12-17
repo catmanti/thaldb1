@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import date
+from django.urls import reverse
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from .lookup import ThalassemiaUnit, DiagnosisType, DS_Division
@@ -81,8 +82,13 @@ class Client(models.Model):
     def __str__(self):
         return f"{self.registration_number} : {self.full_name}"
 
+    def get_absolute_url(self):
+        return reverse("clients:client-detail", kwargs={"pk": self.pk})
+
     @property
     def age(self):
+        if self.date_of_birth is None:
+            return None
         today = date.today()
         years = today.year - self.date_of_birth.year
         # correct the birthdays that not yet occurs this year

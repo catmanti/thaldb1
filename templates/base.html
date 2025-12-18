@@ -13,7 +13,7 @@
 
 <body
     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-    class="min-h-screen bg-base-300"
+    class="min-h-screen bg-base-300 relative z-0"
     x-data="{
         theme: localStorage.getItem('theme') || 'light',
         toggleTheme() {

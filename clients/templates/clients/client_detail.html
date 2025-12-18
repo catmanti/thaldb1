@@ -4,17 +4,16 @@
 <div class="container mx-auto px-4">
     <div class="card bg-base-100 shadow-md my-4">
         <div class="card-body">
-            <h2 class="card-title text-xl font-semibold mb-2">
-                {{ client.full_name }}
-            </h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <p><span class="font-semibold">Registration No:</span> {{ client.registration_number }}</p>
+                <h2 class="card-title text-xl font-semibold mb-2"> {{ client.full_name }} </h2>
+                <h2 class="card-title text-xl font-semibold mb-2"> {{ client.registration_number }}</h2>
                 <p><span class="font-semibold">Gender:</span>
                     {% if client.gender == "M" %}Male{% else %}Female{% endif %}
                 </p>
                 <p><span class="font-semibold">Date of Birth:</span> {{ client.date_of_birth }}</p>
                 <p><span class="font-semibold">Age:</span> {{ client.age_string }}</p>
+                <p><span class="font-semibold">Address:</span> {{ client.address }}</p>
             </div>
         </div>
     </div>

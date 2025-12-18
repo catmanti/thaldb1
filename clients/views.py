@@ -55,13 +55,20 @@ class AdmissionListView(LoginRequiredMixin, ListView):
     context_object_name = "admissions"
 
     def get_queryset(self):
-        return Admission.objects.filter(
+        queryset = Admission.objects.filter(
             client_id=self.kwargs["pk"]
         ).order_by("-date_of_admission")
+    # Determine if we should show all admissions or limit to 4 for toggle button
+        show_all = self.request.GET.get("all") == "1"
+
+        if show_all:
+            return queryset
+        return queryset[:4]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["client_id"] = self.kwargs["pk"]
+        context["show_all"] = self.request.GET.get("all") == "1"
         return context
 
 

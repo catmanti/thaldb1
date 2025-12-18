@@ -3,7 +3,19 @@
    class="btn btn-accent btn-sm">
     + Add Admission
 </a>
-<button class="btn btn-primary btn-sm" hx-get="{% url 'clients:client-admission-list' client_id %}" hx-target="#admissions" hx-swap="innerHTML">View All Admissions</button>
+<button
+    class="btn btn-primary btn-sm ml-2"
+    hx-get="{% url 'clients:client-admission-list' client_id %}?all={% if show_all %}0{% else %}1{% endif %}"
+    hx-target="#admissions"
+    hx-swap="innerHTML"
+>
+    {% if show_all %}
+        ⬆ Show Recent Admissions
+    {% else %}
+        ⬇ View All Admissions
+    {% endif %}
+</button>
+
     <table class="table table-zebra w-full">
         <thead>
             <tr>

@@ -41,11 +41,8 @@ class ClientDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        client = get_object_or_404(Client, pk=self.kwargs['pk'])
-        context['admissions'] = (
-            client.client_admissions.all()
-            .order_by('-date_of_admission')[:4]
-        )
+        client = get_object_or_404(Client, pk=self.kwargs["pk"])
+        context["admissions"] = client.client_admissions.all().order_by("-date_of_admission")[:4]
         return context
 
 
@@ -55,10 +52,8 @@ class AdmissionListView(LoginRequiredMixin, ListView):
     context_object_name = "admissions"
 
     def get_queryset(self):
-        queryset = Admission.objects.filter(
-            client_id=self.kwargs["pk"]
-        ).order_by("-date_of_admission")
-    # Determine if we should show all admissions or limit to 4 for toggle button
+        queryset = Admission.objects.filter(client_id=self.kwargs["pk"]).order_by("-date_of_admission")
+        # Determine if we should show all admissions or limit to 4 for toggle button
         show_all = self.request.GET.get("all") == "1"
 
         if show_all:
@@ -79,7 +74,7 @@ class AdmissionCreateView(LoginRequiredMixin, CreateView):
 
     def get_initial(self):
         initial = super().get_initial()
-        initial["client"] = self.kwargs["pk"]   # pre-fill but hidden
+        initial["client"] = self.kwargs["pk"]  # pre-fill but hidden
         return initial
 
     # def form_valid(self, form):
@@ -104,8 +99,8 @@ class TransfusionListView(LoginRequiredMixin, ListView):
     context_object_name = "transfusions"
 
     def get_queryset(self):
-        client = get_object_or_404(Client, pk=self.kwargs['pk'])
-        return Transfusion.objects.filter(admission__client__id=client.id).order_by('-date_of_transfusion')
+        client = get_object_or_404(Client, pk=self.kwargs["pk"])
+        return Transfusion.objects.filter(admission__client__id=client.id).order_by("-date_of_transfusion")
 
 
 # Get a single client's investigation records ordered by date_done descending
@@ -115,13 +110,14 @@ class InvestigationListView(LoginRequiredMixin, ListView):
     context_object_name = "investigations"
 
     def get_queryset(self):
-        client = get_object_or_404(Client, pk=self.kwargs['pk'])
-        return client.client_investigations.all().order_by('investigation_type__name', '-date_done')
+        client = get_object_or_404(Client, pk=self.kwargs["pk"])
+        return client.client_investigations.all().order_by("investigation_type__name", "-date_done")
 
 
 def test_view(request):
     from django.http import HttpResponse
-    transfusion = Transfusion.objects.filter(admission__client__id=1).order_by('-date_of_transfusion')
+
+    transfusion = Transfusion.objects.filter(admission__client__id=1).order_by("-date_of_transfusion")
     records = []
     for t in transfusion:
         records.append(f"Transfusion on {t.date_of_transfusion} - {t.admission.client.full_name}")

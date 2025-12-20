@@ -1,41 +1,31 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}ThalDB{% endblock %}</title>
-
-    <link rel="stylesheet" href="{% static 'css/output.css' %}">
-    <script src="{% static 'js/alpine.js' %}" defer></script>
-    <script src="{% static 'js/htmx.js' %}" defer></script>
-</head>
-
-<body
-    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-    class="min-h-screen bg-base-300 relative z-0"
-    x-data="{
-        theme: localStorage.getItem('theme') || 'light',
-        toggleTheme() {
-            this.theme = this.theme === 'light' ? 'dark' : 'light';
-            localStorage.setItem('theme', this.theme);
-        }
-    }"
-    x-init="
-        document.documentElement.setAttribute('data-theme', theme);
-        $watch('theme', value => {
-            document.documentElement.setAttribute('data-theme', value);
-        })
-    "
-    :data-theme="theme"
->
-
-    {% block navbar %}
-        {% include 'navbar.html' %}
-    {% endblock navbar %}
-
-    {% block content %}
-    {% endblock content %}
-
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description"
+              content="ThalDB - A database for thalassemia research and resources.">
+        <meta name="keywords"
+              content="thalassemia, database, research, genetics, ThalDB">
+        <title>
+            {% block title %}
+                ThalDB
+            {% endblock title %}
+        </title>
+        <link rel="stylesheet" href="{% static 'css/output.css' %}">
+        <script src="{% static 'js/alpine.js' %}" defer></script>
+        <script src="{% static 'js/htmx.js' %}" defer></script>
+    </head>
+    <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+          class="min-h-screen bg-base-300 relative z-0"
+          x-data="{ theme: localStorage.getItem('theme') || 'light', toggleTheme() { this.theme = this.theme === 'light' ? 'dark' : 'light'; localStorage.setItem('theme', this.theme); } }"
+          x-init=" document.documentElement.setAttribute('data-theme', theme); $watch('theme', value => { document.documentElement.setAttribute('data-theme', value); }) "
+          :data-theme="theme">
+        {% block navbar %}
+            {% include "navbar.html" %}
+        {% endblock navbar %}
+        {% block content %}
+        {% endblock content %}
+    </body>
 </html>

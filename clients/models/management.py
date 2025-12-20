@@ -117,10 +117,7 @@ class Transfusion(models.Model):
     platelet_count = models.DecimalField(max_digits=8, decimal_places=1, blank=True, null=True)
     amount_of_blood = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
     special_type = models.ForeignKey(
-        "Choice",
-        on_delete=models.SET_NULL,
-        null=True,
-        limit_choices_to={"category": "special_blood_type"}, blank=True
+        "Choice", on_delete=models.SET_NULL, null=True, limit_choices_to={"category": "special_blood_type"}, blank=True
     )
     next_date_given = models.DateField(blank=True, null=True)
     reaction = models.CharField(max_length=200, blank=True, null=True, default="None")

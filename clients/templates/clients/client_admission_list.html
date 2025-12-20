@@ -1,21 +1,14 @@
-<div class="overflow-x-auto" >
-    <a hx-get="{% url 'clients:client-admission-create' 1 %}" hx-target="#admission_modal" hx-trigger="click" hx-swap="innerHTML"
-   class="btn btn-accent btn-sm">
-    + Add Admission
-</a>
-<button
-    class="btn btn-primary btn-sm ml-2"
-    hx-get="{% url 'clients:client-admission-list' client_id %}?all={% if show_all %}0{% else %}1{% endif %}"
-    hx-target="#admissions"
-    hx-swap="innerHTML"
->
-    {% if show_all %}
-        ⬆ Show Recent Admissions
-    {% else %}
-        ⬇ View All Admissions
-    {% endif %}
-</button>
-
+<div class="overflow-x-auto">
+    <button class="btn btn-primary btn-sm ml-2"
+            hx-get="{% url 'clients:client-admission-list' client_id %}?all={% if show_all %}0{% else %}1{% endif %}"
+            hx-target="#admissions"
+            hx-swap="innerHTML">
+        {% if show_all %}
+            ⬆ Show Recent Admissions
+        {% else %}
+            ⬇ View All Admissions
+        {% endif %}
+    </button>
     <table class="table table-zebra w-full">
         <thead>
             <tr>
@@ -28,26 +21,27 @@
         </thead>
         <tbody>
             {% for admission in admissions %}
-            <tr class="hover:bg-base-200">
-                <th>{{ forloop.counter }}</th>
-                <td>{{ admission.date_of_admission|date:"D d M Y" }}</td>
-                <td>{{ admission.date_of_discharge|date:"D d M Y"|default:"N/A" }}</td>
-                <td>{{ admission.reason_for_admission }}</td>
-                <td><button class="btn btn-secondary btn-xs"
-                        hx-get="{% url 'clients:client-admission-update' admission.pk %}" hx-target="#admission_modal"
-                        hx-swap="innerHTML">
-                        Update
-                    </button>
-                </td>
-            </tr>
+                <tr class="hover:bg-base-200">
+                    <th>{{ forloop.counter }}</th>
+                    <td>{{ admission.date_of_admission|date:"D d M Y" }}</td>
+                    <td>{{ admission.date_of_discharge|date:"D d M Y"|default:"N/A" }}</td>
+                    <td>{{ admission.reason_for_admission }}</td>
+                    <td>
+                        <button class="btn btn-secondary btn-xs"
+                                hx-get="{% url 'clients:client-admission-update' admission.pk %}"
+                                hx-target="#admission_modal"
+                                hx-swap="innerHTML">Update</button>
+                    </td>
+                </tr>
             {% empty %}
-            <tr>
-                <td colspan="5" class="text-center">No admissions found.</td>
-            </tr>
+                <tr>
+                    <td colspan="5" class="text-center">No admissions found.</td>
+                </tr>
             {% endfor %}
         </tbody>
     </table>
-    <dialog id="admission_modal" class="modal" hx-on::after-settle="admission_modal.showModal()">
+    <dialog id="admission_modal"
+            class="modal"
+            hx-on::after-settle="admission_modal.showModal()">
     </dialog>
-
 </div>

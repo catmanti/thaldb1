@@ -1,19 +1,18 @@
-
-    <div >
-        <table class="table table-zebra w-full">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Admission Date</th>
-                    <th>Transfusion Date</th>
-                    <th>HB Level to be kept</th>
-                    <th>HB Level</th>
-                    <th>Amount of Blood</th>
-                    <th>Next Transfusion Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for transfusion in transfusions %}
+<div>
+    <table class="table table-zebra w-full">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Admission Date</th>
+                <th>Transfusion Date</th>
+                <th>HB Level to be kept</th>
+                <th>HB Level</th>
+                <th>Amount of Blood</th>
+                <th>Next Transfusion Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transfusion in transfusions %}
                 <tr class="hover:bg-base-200">
                     <th>{{ forloop.counter }}</th>
                     <td>{{ transfusion.admission.date_of_admission|date:"D d M Y" }}</td>
@@ -23,11 +22,11 @@
                     <td>{{ transfusion.amount_of_blood }}</td>
                     <td>{{ transfusion.next_date_given|date:"D d M Y"|default:"N/A" }}</td>
                 </tr>
-                {% empty %}
+            {% empty %}
                 <tr>
                     <td colspan="7" class="text-center">No transfusions found.</td>
                 </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

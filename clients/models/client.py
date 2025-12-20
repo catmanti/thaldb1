@@ -105,11 +105,7 @@ class Client(models.Model):
         diff = relativedelta(today, self.date_of_birth)
 
         # The result is an object with .years, .months, and .days attributes
-        return {
-            'years': diff.years,
-            'months': diff.months,
-            'days': diff.days
-        }
+        return {"years": diff.years, "months": diff.months, "days": diff.days}
 
     @property
     def age_string(self):

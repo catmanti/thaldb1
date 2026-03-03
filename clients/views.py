@@ -43,6 +43,12 @@ class ClientDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         client = get_object_or_404(Client, pk=self.kwargs["pk"])
         context["admissions"] = client.client_admissions.all().order_by("-date_of_admission")[:4]
+        context["transfusions"] = Transfusion.objects.filter(admission__client__id=client.id).order_by(
+            "-date_of_transfusion"
+        )[:4]
+        context["investigations"] = client.client_investigations.all().order_by(
+            "investigation_type__name", "-date_done"
+        )[:4]
         return context
 
 

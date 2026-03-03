@@ -31,69 +31,72 @@
                 <div class="card-actions justify-end mt-4">
                     <a href="{% url 'clients:client-update' client.pk %}"
                        class="btn btn-secondary btn-sm">Edit Client</a>
-                    <a hx-get="{% url 'clients:client-admission-create' 1 %}"
+                    <a hx-get="{% url 'clients:client-admission-create' client.pk %}"
                        hx-target="#admission_modal"
                        hx-trigger="click"
                        hx-swap="innerHTML"
                        class="btn btn-accent btn-sm">Add Admission</a>
                 </div>
-            </div>
-            <div class="tabs tabs-lift mt-4 overflow-visible bg-base-200">
-                <input type="radio"
-                       name="my_tabs_3"
-                       class="tab"
-                       aria-label="Admissions"
-                       checked="checked" />
-                <div id="admissions" class="tab-content border-base-300 p-6">
-                    {% include "clients/client_admission_list.html" with admissions=admissions client_id=client.pk %}
-                </div>
-                <input type="radio" name="my_tabs_3" class="tab" aria-label="Transfusions" />
-                <div id="transfusions"
-                     class="tab-content border-base-300 p-6"
-                     hx-trigger="load"
-                     hx-get="{% url 'clients:client-transfusion-list' client.pk %}"
-                     hx-target="#transfusions"
-                     hx-swap="innerHTML">Loading...</div>
-                <input type="radio" name="my_tabs_3" class="tab" aria-label="Investigations" />
-                <div id="investigations"
-                     class="tab-content border-base-300 p-6"
-                     hx-trigger="load"
-                     hx-get="{% url 'clients:client-investigation-list' client.pk %}"
-                     hx-target="#investigations"
-                     hx-swap="innerHTML">Loading...</div>
-                <input type="radio" name="my_tabs_3" class="tab" aria-label="Detail" />
-                <div class="tab-content border-base-300 p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 p-6">
-                        <p>
-                            <span class="font-semibold">Ethnicity:</span> {{ client.ethnicity }}
-                        </p>
-                        <p>
-                            <span class="font-semibold">Blood Group:</span> {{ client.blood_group }}
-                        </p>
-                        <p>
-                            <span class="font-semibold">NIC No:</span> {{ client.nic_number }}
-                        </p>
-                        <p>
-                            <span class="font-semibold">Date of Registration:</span> {{ client.date_of_registration }}
-                        </p>
-                        <p>
-                            <span class="font-semibold">Address:</span> {{ client.address }}
-                        </p>
-                        <p>
-                            <span class="font-semibold">Contact No:</span> {{ client.contact_number }}
-                        </p>
-                        <p>
-                            <span class="font-semibold">Occupation:</span> {{ client.occupation }}
-                        </p>
-                        <p>
-                            <span class="font-semibold">Email:</span> {{ client.email }}
-                        </p>
-                        <p>
-                            <span class="font-semibold">Marital Status:</span> {{ client.marital_status }}
-                        </p>
+                <div class="tabs tabs-lift mt-4 overflow-visible bg-base-300">
+                    <!-- Admissions tab content -->
+                    <input type="radio"
+                           name="my_tabs_3"
+                           class="tab"
+                           aria-label="Admissions"
+                           checked="checked" />
+                    <div id="admissions" class="tab-content bg-base-100 border-base-300 p-6">
+                        {% include "clients/client_admission_list.html" with admissions=admissions client_id=client.pk %}
+                    </div>
+                    <!-- Transfusions tab content -->
+                    <input type="radio" name="my_tabs_3" class="tab" aria-label="Transfusions" />
+                    <div id="transfusions" class="tab-content bg-base-100 border-base-300 p-6">
+                        {% include "clients/client_transfusion_list.html" with transfusions=transfusions client_id=client.pk %}
+                    </div>
+                    <!-- Investigations tab content -->
+                    <input type="radio" name="my_tabs_3" class="tab" aria-label="Investigations" />
+                    <div id="investigations"
+                         class="tab-content bg-base-100 border-base-300 p-6">
+                        {% include "clients/client_investigation_list.html" with investigations=investigations client_id=client.pk %}
+                    </div>
+                    <!-- Detail tab content -->
+                    <input type="radio" name="my_tabs_3" class="tab" aria-label="Detail" />
+                    <div class="tab-content bg-base-100 border-base-300 p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 p-6">
+                            <p>
+                                <span class="font-semibold">Ethnicity:</span> {{ client.ethnicity }}
+                            </p>
+                            <p>
+                                <span class="font-semibold">Blood Group:</span> {{ client.blood_group }}
+                            </p>
+                            <p>
+                                <span class="font-semibold">NIC No:</span> {{ client.nic_number }}
+                            </p>
+                            <p>
+                                <span class="font-semibold">Date of Registration:</span> {{ client.date_of_registration }}
+                            </p>
+                            <p>
+                                <span class="font-semibold">Address:</span> {{ client.address }}
+                            </p>
+                            <p>
+                                <span class="font-semibold">Contact No:</span> {{ client.contact_number }}
+                            </p>
+                            <p>
+                                <span class="font-semibold">Occupation:</span> {{ client.occupation }}
+                            </p>
+                            <p>
+                                <span class="font-semibold">Email:</span> {{ client.email }}
+                            </p>
+                            <p>
+                                <span class="font-semibold">Marital Status:</span> {{ client.marital_status }}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <dialog id="admission_modal"
+            class="modal"
+            hx-on::after-settle="admission_modal.showModal()">
+    </dialog>
 {% endblock content %}

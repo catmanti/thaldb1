@@ -1,8 +1,9 @@
 from .base import *  # noqa: F403
+from decouple import config, Csv
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config("DJANGO_ALLOWED_HOSTS", default="127.0.0.1,localhost", cast=Csv())
 
 DATABASES = {
     "default": {

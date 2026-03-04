@@ -2,6 +2,14 @@
 
 Project Start Date 2025-10-20 9:00 AM
 
+## Environment Variables
+
+This project now uses `python-decouple` to load settings from environment variables (or `.env` file in local development).
+
+1. Create a local env file from the template:
+   `cp .env.example .env`
+2. Update `DJANGO_SECRET_KEY` and database values for your environment.
+3. Never commit `.env` to git.
 
 ## TODO
 
@@ -52,5 +60,4 @@ Check:
     Drug regimen and duration
     Growth Records
     Investigation Types
-
 

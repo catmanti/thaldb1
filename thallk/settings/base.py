@@ -1,8 +1,9 @@
 from pathlib import Path
+from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-SECRET_KEY = "django-insecure-i)*1yfs8*3v)h!o2v21@h!0e@ex(t-k5_8-=#ua9bspv2t75z)"
+SECRET_KEY = config("DJANGO_SECRET_KEY", default="django-insecure-dev-only-change-me")
 
 INSTALLED_APPS = [
     "django.contrib.admin",

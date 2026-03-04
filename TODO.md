@@ -6,20 +6,23 @@ Project Description
 
 ### Todo
 
-- [ ] Trasfution Add/Edit  
-- [ ] Remove Investigation unit from Investigations model  
-- [ ] Add Reference Range at Inv Type  
+- [ ] In class DrugName remove dose and regiman as they duplicate in class Drug.
+- [ ] In class Drug add feild comment
+- [ ] In class ThalassemiaUnit change field ds_division to district (class District)
+- [ ] Trasfution Add/Edit
+- [ ] Remove Investigation unit from Investigations model
+- [ ] Add Reference Range at Inv Type
 
 ### In Progress
 
 
 ### Done ✓
 
-- [x] Update Client line wise  
-- [x] Add client form CSS and Modal  
-- [x] Admission Add/Edit  
-- [x] Investigation List order by  
-- [x] Agest Investigation view to Order by Inv, date  
-- [x] Trasfution List  
-- [x] Admissions List  
+- [x] Update Client line wise
+- [x] Add client form CSS and Modal
+- [x] Admission Add/Edit
+- [x] Investigation List order by
+- [x] Agest Investigation view to Order by Inv, date
+- [x] Trasfution List
+- [x] Admissions List
 

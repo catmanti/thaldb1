@@ -42,12 +42,16 @@
                 <details>
                     <summary>Clients</summary>
                     <ul class="p-2">
-                        <li>
-                            <a href="{% url 'clients:client-add' %}">Add Client</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'clients:client-list' %}">Client List</a>
-                        </li>
+                        {% if perms.clients.add_client %}
+                            <li>
+                                <a href="{% url 'clients:client-add' %}">Add Client</a>
+                            </li>
+                        {% endif %}
+                        {% if perms.clients.view_client %}
+                            <li>
+                                <a href="{% url 'clients:client-list' %}">Client List</a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </details>
             </li>

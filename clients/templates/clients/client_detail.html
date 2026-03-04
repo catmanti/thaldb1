@@ -29,13 +29,17 @@
                     </p>
                 </div>
                 <div class="card-actions justify-end mt-4">
-                    <a href="{% url 'clients:client-update' client.pk %}"
-                       class="btn btn-secondary btn-sm">Edit Client</a>
-                    <a hx-get="{% url 'clients:client-admission-create' client.pk %}"
-                       hx-target="#admission_modal"
-                       hx-trigger="click"
-                       hx-swap="innerHTML"
-                       class="btn btn-accent btn-sm">Add Admission</a>
+                    {% if perms.clients.change_client %}
+                        <a href="{% url 'clients:client-update' client.pk %}"
+                           class="btn btn-secondary btn-sm">Edit Client</a>
+                    {% endif %}
+                    {% if perms.clients.add_admission %}
+                        <a hx-get="{% url 'clients:client-admission-create' client.pk %}"
+                           hx-target="#admission_modal"
+                           hx-trigger="click"
+                           hx-swap="innerHTML"
+                           class="btn btn-accent btn-sm">Add Admission</a>
+                    {% endif %}
                 </div>
                 <div class="tabs tabs-lift mt-4 overflow-visible bg-base-300">
                     <!-- Admissions tab content -->

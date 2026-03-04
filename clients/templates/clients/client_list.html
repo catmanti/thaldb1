@@ -10,8 +10,8 @@
                         <th>Reg-ID</th>
                         <th>Full Name</th>
                         <th>Gender</th>
-                        <th>Edit</th>
-                        <th>View</th>
+                        {% if perms.clients.change_client %}<th>Edit</th>{% endif %}
+                        {% if perms.clients.view_client %}<th>View</th>{% endif %}
                     </tr>
                 </thead>
                 {% for cl in clients %}
@@ -27,14 +27,18 @@
                                     Female
                                 {% endif %}
                             </td>
-                            <td>
-                                <a href="{% url 'clients:client-update' cl.id %}"
-                                   class="btn btn-secondary btn-xs">Edit</a>
-                            </td>
-                            <td>
-                                <a href="{% url 'clients:client-detail' cl.id %}"
-                                   class="btn btn-primary btn-sm">View</a>
-                            </td>
+                            {% if perms.clients.change_client %}
+                                <td>
+                                    <a href="{% url 'clients:client-update' cl.id %}"
+                                       class="btn btn-secondary btn-xs">Edit</a>
+                                </td>
+                            {% endif %}
+                            {% if perms.clients.view_client %}
+                                <td>
+                                    <a href="{% url 'clients:client-detail' cl.id %}"
+                                       class="btn btn-primary btn-sm">View</a>
+                                </td>
+                            {% endif %}
                         </tr>
                     </tbody>
                 {% endfor %}

@@ -20,7 +20,15 @@
                     {% if field.errors %}<p class="text-red-600 text-sm mt-1">{{ field.errors|join:", " }}</p>{% endif %}
                 </div>
             {% endfor %}
-            <button class="btn btn-primary" type="submit">Save</button>
+            {% if object %}
+                {% if perms.clients.change_client %}
+                    <button class="btn btn-primary" type="submit">Save</button>
+                {% endif %}
+            {% else %}
+                {% if perms.clients.add_client %}
+                    <button class="btn btn-primary" type="submit">Save</button>
+                {% endif %}
+            {% endif %}
         </form>
     </div>
 {% endblock content %}

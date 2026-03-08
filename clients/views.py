@@ -157,7 +157,7 @@ class AdmissionCreateView(LoginRequiredMixin, AuthenticatedPermissionRequiredMix
         return initial
 
     def form_valid(self, form):
-        form.instance.client = self.client_obj
+        form.instance.client_id = self.client_obj.id
         return super().form_valid(form)
 
 

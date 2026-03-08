@@ -23,7 +23,15 @@
                     {% if field.errors %}<p class="text-red-600 text-sm mt-1">{{ field.errors|join:", " }}</p>{% endif %}
                 </div>
             {% endfor %}
-            <button class="btn btn-success btn-sm">Save</button>
+            {% if object %}
+                {% if perms.clients.change_admission %}
+                    <button class="btn btn-success btn-sm">Save</button>
+                {% endif %}
+            {% else %}
+                {% if perms.clients.add_admission %}
+                    <button class="btn btn-success btn-sm">Save</button>
+                {% endif %}
+            {% endif %}
         </form>
         <div class="modal-action">
             <form method="dialog">

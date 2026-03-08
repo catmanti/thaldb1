@@ -1,14 +1,16 @@
 <div class="overflow-x-auto">
-    <button class="btn btn-primary btn-sm ml-2"
-            hx-get="{% url 'clients:client-admission-list' client_id %}?all={% if show_all %}0{% else %}1{% endif %}"
-            hx-target="#admissions"
-            hx-swap="innerHTML">
-        {% if show_all %}
-            ⬆ Show Recent Admissions
-        {% else %}
-            ⬇ View All Admissions
-        {% endif %}
-    </button>
+    {% if perms.clients.view_admission %}
+        <button class="btn btn-primary btn-sm ml-2"
+                hx-get="{% url 'clients:client-admission-list' client_id %}?all={% if show_all %}0{% else %}1{% endif %}"
+                hx-target="#admissions"
+                hx-swap="innerHTML">
+            {% if show_all %}
+                ⬆ Show Recent Admissions
+            {% else %}
+                ⬇ View All Admissions
+            {% endif %}
+        </button>
+    {% endif %}
     <table class="table table-zebra w-full">
         <thead>
             <tr>
@@ -16,7 +18,7 @@
                 <th>Admission Date</th>
                 <th>Discharge Date</th>
                 <th>Reason</th>
-                <th>Update</th>
+                {% if perms.clients.change_admission %}<th>Update</th>{% endif %}
             </tr>
         </thead>
         <tbody>
@@ -26,16 +28,18 @@
                     <td>{{ admission.date_of_admission|date:"D d M Y" }}</td>
                     <td>{{ admission.date_of_discharge|date:"D d M Y"|default:"N/A" }}</td>
                     <td>{{ admission.reason_for_admission }}</td>
-                    <td>
-                        <button class="btn btn-secondary btn-xs"
-                                hx-get="{% url 'clients:client-admission-update' admission.pk %}"
-                                hx-target="#admission_modal"
-                                hx-swap="innerHTML">Update</button>
-                    </td>
+                    {% if perms.clients.change_admission %}
+                        <td>
+                            <button class="btn btn-secondary btn-xs"
+                                    hx-get="{% url 'clients:client-admission-update' admission.pk %}"
+                                    hx-target="#admission_modal"
+                                    hx-swap="innerHTML">Update</button>
+                        </td>
+                    {% endif %}
                 </tr>
             {% empty %}
                 <tr>
-                    <td colspan="5" class="text-center">No admissions found.</td>
+                    <td colspan="{% if perms.clients.change_admission %}5{% else %}4{% endif %}" class="text-center">No admissions found.</td>
                 </tr>
             {% endfor %}
         </tbody>

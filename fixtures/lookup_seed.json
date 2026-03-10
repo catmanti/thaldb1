@@ -1,0 +1,277 @@
+[
+{
+  "model": "clients.choice",
+  "pk": 1,
+  "fields": {
+    "category": "clinic_type",
+    "name": "Endocrine Clinic"
+  }
+},
+{
+  "model": "clients.choice",
+  "pk": 2,
+  "fields": {
+    "category": "clinic_type",
+    "name": "STD Clinic"
+  }
+},
+{
+  "model": "clients.choice",
+  "pk": 3,
+  "fields": {
+    "category": "clinic_type",
+    "name": "Obstetrics Clinic"
+  }
+},
+{
+  "model": "clients.choice",
+  "pk": 4,
+  "fields": {
+    "category": "marital_status",
+    "name": "Single"
+  }
+},
+{
+  "model": "clients.choice",
+  "pk": 5,
+  "fields": {
+    "category": "marital_status",
+    "name": "Married"
+  }
+},
+{
+  "model": "clients.choice",
+  "pk": 6,
+  "fields": {
+    "category": "current_status",
+    "name": "Alive"
+  }
+},
+{
+  "model": "clients.choice",
+  "pk": 7,
+  "fields": {
+    "category": "current_status",
+    "name": "Transferred"
+  }
+},
+{
+  "model": "clients.choice",
+  "pk": 8,
+  "fields": {
+    "category": "current_status",
+    "name": "Deceased"
+  }
+},
+{
+  "model": "clients.choice",
+  "pk": 9,
+  "fields": {
+    "category": "complication_status",
+    "name": "Diabetes Mellitus"
+  }
+},
+{
+  "model": "clients.choice",
+  "pk": 10,
+  "fields": {
+    "category": "complication_status",
+    "name": "Hypothyroidism"
+  }
+},
+{
+  "model": "clients.choice",
+  "pk": 11,
+  "fields": {
+    "category": "complication_status",
+    "name": "CKD"
+  }
+},
+{
+  "model": "clients.choice",
+  "pk": 12,
+  "fields": {
+    "category": "vaccine_name",
+    "name": "Hepatitis B"
+  }
+},
+{
+  "model": "clients.choice",
+  "pk": 13,
+  "fields": {
+    "category": "vaccine_name",
+    "name": "HIB"
+  }
+},
+{
+  "model": "clients.choice",
+  "pk": 14,
+  "fields": {
+    "category": "special_blood_type",
+    "name": "Washed Blood"
+  }
+},
+{
+  "model": "clients.choice",
+  "pk": 15,
+  "fields": {
+    "category": "special_blood_type",
+    "name": "Irradiated Blood"
+  }
+},
+{
+  "model": "clients.choice",
+  "pk": 16,
+  "fields": {
+    "category": "growth",
+    "name": "Normal Growth"
+  }
+},
+{
+  "model": "clients.choice",
+  "pk": 17,
+  "fields": {
+    "category": "growth",
+    "name": "Poor Growth"
+  }
+},
+{
+  "model": "clients.province",
+  "pk": 1,
+  "fields": {
+    "name": "North Western Province"
+  }
+},
+{
+  "model": "clients.district",
+  "pk": 1,
+  "fields": {
+    "name": "Kurunegala",
+    "province": 1
+  }
+},
+{
+  "model": "clients.district",
+  "pk": 2,
+  "fields": {
+    "name": "Puttalam",
+    "province": 1
+  }
+},
+{
+  "model": "clients.ds_division",
+  "pk": 1,
+  "fields": {
+    "name": "Kurunegala",
+    "district": 1
+  }
+},
+{
+  "model": "clients.ds_division",
+  "pk": 2,
+  "fields": {
+    "name": "Mawathagama",
+    "district": 1
+  }
+},
+{
+  "model": "clients.ds_division",
+  "pk": 3,
+  "fields": {
+    "name": "Polpithigama",
+    "district": 1
+  }
+},
+{
+  "model": "clients.ds_division",
+  "pk": 4,
+  "fields": {
+    "name": "Wariyapola",
+    "district": 1
+  }
+},
+{
+  "model": "clients.ds_division",
+  "pk": 5,
+  "fields": {
+    "name": "Nikaweratiya",
+    "district": 1
+  }
+},
+{
+  "model": "clients.ds_division",
+  "pk": 6,
+  "fields": {
+    "name": "Puttalam",
+    "district": 2
+  }
+},
+{
+  "model": "clients.ds_division",
+  "pk": 7,
+  "fields": {
+    "name": "Chilaw",
+    "district": 2
+  }
+},
+{
+  "model": "clients.ds_division",
+  "pk": 8,
+  "fields": {
+    "name": "Wennappuwa",
+    "district": 2
+  }
+},
+{
+  "model": "clients.ds_division",
+  "pk": 9,
+  "fields": {
+    "name": "Mundalama",
+    "district": 2
+  }
+},
+{
+  "model": "clients.ds_division",
+  "pk": 10,
+  "fields": {
+    "name": "Anamaduwa",
+    "district": 2
+  }
+},
+{
+  "model": "clients.thalassemiaunit",
+  "pk": 1,
+  "fields": {
+    "name": "National Thalassaemia Centre",
+    "description": "Kurunegala district unit",
+    "ds_division": 1
+  }
+},
+{
+  "model": "clients.thalassemiaunit",
+  "pk": 2,
+  "fields": {
+    "name": "Ragama Thalassemia Unit",
+    "description": "",
+    "ds_division": null
+  }
+},
+{
+  "model": "clients.diagnosistype",
+  "pk": 1,
+  "fields": {
+    "name": "Beta Thal Major",
+    "description": "",
+    "icd_code": null
+  }
+},
+{
+  "model": "clients.diagnosistype",
+  "pk": 2,
+  "fields": {
+    "name": "E Beta Thal",
+    "description": "",
+    "icd_code": null
+  }
+}
+]

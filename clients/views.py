@@ -3,11 +3,12 @@ from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, FormView, UpdateView
 
 from .form import AdmissionForm, ClientForm
-from .models.client import Client
+from .models.client import Client, ClientCareUnit
 from .models.management import Admission, Transfusion
 
 
@@ -27,7 +28,7 @@ class UnitScopedMixin:
         user_unit_id = self._user_unit_id()
         if not user_unit_id:
             return queryset.none()
-        return queryset.filter(unit_id=user_unit_id)
+        return queryset.filter(care_links__unit_id=user_unit_id, care_links__is_active=True).distinct()
 
     def scope_unit_queryset(self, queryset):
         if self._is_superuser():
@@ -58,18 +59,33 @@ class ClientFormView(LoginRequiredMixin, AuthenticatedPermissionRequiredMixin, U
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields["unit"].queryset = self.scope_unit_queryset(form.fields["unit"].queryset)
-        if not self._is_superuser() and self._user_unit_id():
-            form.fields["unit"].initial = self._user_unit_id()
+        if "primary_unit" in form.fields:
+            form.fields["primary_unit"].queryset = self.scope_unit_queryset(form.fields["primary_unit"].queryset)
+            if not self._is_superuser() and self._user_unit_id():
+                form.fields["primary_unit"].initial = self._user_unit_id()
         return form
 
     def form_valid(self, form):
+        client = form.save()
         if not self._is_superuser():
             user_unit_id = self._user_unit_id()
             if not user_unit_id:
                 raise Http404("No unit assigned to current user.")
-            form.instance.unit_id = user_unit_id
-        form.save()
+            primary_unit_id = user_unit_id
+        else:
+            primary_unit = form.cleaned_data.get("primary_unit")
+            if not primary_unit:
+                form.add_error("primary_unit", "Primary unit is required.")
+                return self.form_invalid(form)
+            primary_unit_id = primary_unit.id
+
+        ClientCareUnit.objects.create(
+            client=client,
+            unit_id=primary_unit_id,
+            role=ClientCareUnit.Role.PRIMARY,
+            start_date=timezone.localdate(),
+            is_active=True,
+        )
         return super().form_valid(form)
 
 
@@ -97,7 +113,8 @@ class ClientUpdateView(LoginRequiredMixin, AuthenticatedPermissionRequiredMixin,
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields["unit"].queryset = self.scope_unit_queryset(form.fields["unit"].queryset)
+        if "primary_unit" in form.fields:
+            form.fields.pop("primary_unit")
         return form
 
 
@@ -174,7 +191,7 @@ class AdmissionUpdateView(LoginRequiredMixin, AuthenticatedPermissionRequiredMix
         user_unit_id = self._user_unit_id()
         if not user_unit_id:
             return queryset.none()
-        return queryset.filter(client__unit_id=user_unit_id)
+        return queryset.filter(client__care_links__unit_id=user_unit_id, client__care_links__is_active=True).distinct()
 
     def get_success_url(self):
         client_id = self.object.client.id

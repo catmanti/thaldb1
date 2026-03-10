@@ -3,6 +3,8 @@ from datetime import date
 from django.urls import reverse
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
+from django.db.models import F, Q
+from django.core.exceptions import ValidationError
 from .lookup import ThalassemiaUnit, DiagnosisType, DS_Division
 
 
@@ -47,7 +49,9 @@ class Client(models.Model):
     # --- Registration & clinical ---
     registration_number = models.CharField(max_length=50, unique=True)
     date_of_registration = models.DateField(blank=True, null=True)
-    unit = models.ForeignKey(ThalassemiaUnit, on_delete=models.SET_NULL, blank=True, null=True, related_name="clients")
+    care_units = models.ManyToManyField(
+        ThalassemiaUnit, through="ClientCareUnit", related_name="care_clients", blank=True
+    )
     diagnosis = models.ForeignKey(
         DiagnosisType, on_delete=models.SET_NULL, blank=True, null=True, related_name="clients"
     )
@@ -112,8 +116,57 @@ class Client(models.Model):
         age_data = self.precise_age
         return f"{age_data['years']} years, {age_data['months']} months, and {age_data['days']} days"
 
+    @property
+    def primary_care_unit(self):
+        primary_link = self.care_links.filter(is_active=True, role=ClientCareUnit.Role.PRIMARY).first()
+        return primary_link.unit if primary_link else None
+
     class Meta:
         ordering = ["full_name"]
+
+
+class ClientCareUnit(models.Model):
+    class Role(models.TextChoices):
+        PRIMARY = "PRIMARY", "Primary"
+        SHARED = "SHARED", "Shared"
+        REFERRAL = "REFERRAL", "Referral"
+
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name="care_links")
+    unit = models.ForeignKey(ThalassemiaUnit, on_delete=models.CASCADE, related_name="client_links")
+    role = models.CharField(max_length=20, choices=Role.choices, default=Role.PRIMARY)
+    start_date = models.DateField(default=timezone.localdate)
+    end_date = models.DateField(blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    notes = models.TextField(blank=True, null=True)
+
+    def clean(self):
+        if self.end_date and self.end_date < self.start_date:
+            raise ValidationError({"end_date": "End date cannot be earlier than start date."})
+
+        if self.role == self.Role.PRIMARY and not self.is_active:
+            raise ValidationError({"is_active": "Primary care unit must be active."})
+
+    def __str__(self):
+        return f"{self.client.registration_number} - {self.unit.name} ({self.role})"
+
+    class Meta:
+        ordering = ["client", "-is_active", "role", "start_date"]
+        constraints = [
+            models.CheckConstraint(
+                condition=Q(end_date__isnull=True) | Q(end_date__gte=F("start_date")),
+                name="check_clientcareunit_end_date_after_start",
+            ),
+            models.UniqueConstraint(
+                fields=["client", "unit"],
+                condition=Q(is_active=True),
+                name="uniq_active_client_unit_link",
+            ),
+            models.UniqueConstraint(
+                fields=["client"],
+                condition=Q(is_active=True, role="PRIMARY"),
+                name="uniq_active_primary_unit_per_client",
+            ),
+        ]
 
 
 # -------------------------------------------------------------------

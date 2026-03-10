@@ -1,11 +1,11 @@
 from django.contrib.auth.models import Permission
 from django.core.exceptions import ValidationError
-from django.db.utils import IntegrityError
+from django.db import IntegrityError
 from django.test import SimpleTestCase, TestCase
 from django.urls import resolve, reverse
 
 from clients.form import ClientForm
-from clients.models.client import Client, FamilyMember
+from clients.models.client import Client, ClientCareUnit, FamilyMember
 from clients.models.lookup import Choice, DS_Division, DiagnosisType, District, Province, ThalassemiaUnit
 from clients.views import ClientFormView, ClientListView, ClientUpdateView
 from users.models import CustomUser as User
@@ -16,8 +16,8 @@ class ClientModelTest(TestCase):
         self.province = Province.objects.create(name="Northwestern")
         self.district = District.objects.create(name="Kurunegala", province=self.province)
         self.ds_division = DS_Division.objects.create(name="Polpithigama", district=self.district)
+        self.primary_unit = ThalassemiaUnit.objects.create(name="Kurunegala")
         Choice.objects.create(category="marital_status", name="Single")
-        self.thalassemia_unit = ThalassemiaUnit.objects.create(name="Kurunegala")
 
         self.client = Client.objects.create(
             registration_number="T-525",
@@ -29,7 +29,11 @@ class ClientModelTest(TestCase):
             ds_division=self.ds_division,
             address="123 Main Street",
             marital_status=Choice.objects.get(name="Single"),
-            unit=self.thalassemia_unit,
+        )
+        ClientCareUnit.objects.create(
+            client=self.client,
+            unit=self.primary_unit,
+            role=ClientCareUnit.Role.PRIMARY,
         )
 
     def test_client_str(self):
@@ -47,8 +51,9 @@ class ClientModelTest(TestCase):
         self.assertEqual(self.client.gender, "M")
         self.assertEqual(self.client.blood_group, "A+")
         self.assertEqual(self.client.address, "123 Main Street")
-        self.assertEqual(self.client.ds_division, self.ds_division)
-        self.assertEqual(self.client.unit, self.thalassemia_unit)
+
+    def test_primary_care_unit(self):
+        self.assertEqual(self.client.primary_care_unit, self.primary_unit)
 
     def test_client_marital_status(self):
         self.assertEqual(self.client.marital_status.name, "Single")
@@ -70,6 +75,15 @@ class ClientModelTest(TestCase):
         self.ds_division.delete()
         client = Client.objects.get(pk=self.client.pk)
         self.assertIsNone(client.ds_division)
+
+    def test_only_one_active_primary_per_client(self):
+        other_unit = ThalassemiaUnit.objects.create(name="Other Unit")
+        with self.assertRaises(IntegrityError):
+            ClientCareUnit.objects.create(
+                client=self.client,
+                unit=other_unit,
+                role=ClientCareUnit.Role.PRIMARY,
+            )
 
 
 class FamilyMemberOnDeleteTest(TestCase):
@@ -118,14 +132,15 @@ class ClientViewTest(TestCase):
             registration_number="T-501",
             full_name="Saman",
             ds_division=self.ds_division,
-            unit=self.unit_a,
         )
+        ClientCareUnit.objects.create(client=self.client_obj, unit=self.unit_a, role=ClientCareUnit.Role.PRIMARY)
+
         self.other_unit_client = Client.objects.create(
             registration_number="T-502",
             full_name="Kamal",
             ds_division=self.ds_division,
-            unit=self.unit_b,
         )
+        ClientCareUnit.objects.create(client=self.other_unit_client, unit=self.unit_b, role=ClientCareUnit.Role.PRIMARY)
 
     def test_client_list_view_scoped_to_user_unit(self):
         self.client.login(username="testuser", password="pass123")
@@ -146,6 +161,7 @@ class ClientFormTest(TestCase):
         self.province = Province.objects.create(name="Western")
         self.district = District.objects.create(name="Colombo", province=self.province)
         self.ds_division = DS_Division.objects.create(name="Kaduwela", district=self.district)
+        self.unit = ThalassemiaUnit.objects.create(name="Western Unit")
 
     def test_valid_form(self):
         form_data = {
@@ -153,16 +169,29 @@ class ClientFormTest(TestCase):
             "full_name": "Nimal",
             "ds_division": self.ds_division.id,
             "gender": "M",
+            "primary_unit": self.unit.id,
         }
         form = ClientForm(data=form_data)
         self.assertTrue(form.is_valid())
 
-    def test_blank_name_not_valid(self):
+    def test_primary_unit_required_for_new_client(self):
         form_data = {
             "registration_number": "T-601",
+            "full_name": "Nimal",
+            "ds_division": self.ds_division.id,
+            "gender": "M",
+        }
+        form = ClientForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn("primary_unit", form.errors)
+
+    def test_blank_name_not_valid(self):
+        form_data = {
+            "registration_number": "T-602",
             "full_name": "",
             "ds_division": self.ds_division.id,
             "gender": "M",
+            "primary_unit": self.unit.id,
         }
         form = ClientForm(data=form_data)
         self.assertFalse(form.is_valid())

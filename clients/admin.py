@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models.client import (
     Client,
+    ClientCareUnit,
     ClientDeath,
     ClientTransfer,
     FamilyMember,
@@ -80,6 +81,13 @@ class AdmissionInline(admin.TabularInline):
     extra = 1
 
 
+class ClientCareUnitInline(admin.TabularInline):
+    model = ClientCareUnit
+    extra = 1
+    min_num = 1
+    validate_min = True
+
+
 # ───────────────────────────────────────────────
 # CLIENT ADMIN
 # ───────────────────────────────────────────────
@@ -95,6 +103,7 @@ class ClientAdmin(admin.ModelAdmin):
         "blood_group",
         "diagnosis",
         "date_of_registration",
+        "get_primary_unit",
     )
     search_fields = ("full_name", "common_name", "diagnosis", "contact_number")
     list_filter = ("gender", "blood_group", "diagnosis", "ethnicity")
@@ -110,7 +119,13 @@ class ClientAdmin(admin.ModelAdmin):
         ClinicVisitInline,
         InvestigationInline,
         GrowthRecordInline,
+        ClientCareUnitInline,
     ]
+
+    def get_primary_unit(self, obj):
+        return obj.primary_care_unit
+
+    get_primary_unit.short_description = "Primary Unit"
 
 
 # ───────────────────────────────────────────────
@@ -154,6 +169,13 @@ class DS_DivisionAdmin(admin.ModelAdmin):
 class FamilyMemberAdmin(admin.ModelAdmin):
     list_display = ("client", "name", "relationship", "diagnosis")
     search_fields = ("name", "relationship")
+
+
+@admin.register(ClientCareUnit)
+class ClientCareUnitAdmin(admin.ModelAdmin):
+    list_display = ("client", "unit", "role", "is_active", "start_date", "end_date")
+    list_filter = ("role", "is_active", "unit")
+    search_fields = ("client__full_name", "client__registration_number", "unit__name")
 
 
 @admin.register(Drug)

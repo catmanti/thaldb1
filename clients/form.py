@@ -1,13 +1,31 @@
 from django import forms
 from .models.client import Client
 from .models.management import Admission
+from .models.lookup import ThalassemiaUnit
 
 
 class ClientForm(forms.ModelForm):
+    primary_unit = forms.ModelChoiceField(
+        queryset=ThalassemiaUnit.objects.all(),
+        required=False,
+        help_text="Required when creating a new client.",
+    )
+
     class Meta:
         model = Client
         fields = "__all__"
-        exclude = ["photo"]
+        exclude = ["photo", "care_units"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.pk and self.instance.primary_care_unit:
+            self.fields["primary_unit"].initial = self.instance.primary_care_unit
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if not self.instance.pk and not cleaned_data.get("primary_unit"):
+            self.add_error("primary_unit", "Primary unit is required.")
+        return cleaned_data
 
 
 # class AdmissionForm(forms.ModelForm):

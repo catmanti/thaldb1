@@ -66,6 +66,8 @@ class DS_Division(models.Model):
 
     class Meta:
         ordering = ["name"]
+        verbose_name = "DS Division"
+        verbose_name_plural = "DS Divisions"
 
     def __str__(self):
         return self.name

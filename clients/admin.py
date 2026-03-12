@@ -201,7 +201,13 @@ class VaccinationAdmin(admin.ModelAdmin):
 
 @admin.register(Transfusion)
 class TransfusionAdmin(admin.ModelAdmin):
-    list_display = ("get_client", "get_date_of_admission", "HB_level", "amount_of_blood", "next_date_given")
+    list_display = (
+        "get_client",
+        "get_date_of_admission",
+        "post_HB_level",
+        "amount_of_blood",
+        "next_date_given",
+    )
     list_filter = ("special_type",)
     date_hierarchy = "date_of_transfusion"
 

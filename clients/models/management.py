@@ -1,6 +1,7 @@
 from django.db import models
-from .client import Client
 from django.urls import reverse
+
+from .client import Client
 
 
 class ComplicationType(models.Model):
@@ -111,9 +112,9 @@ class Transfusion(models.Model):
     # Client of the transfusion is the client of the admission
     admission = models.ForeignKey(Admission, on_delete=models.CASCADE, related_name="blood_transfusions")
     date_of_transfusion = models.DateField()
-    HB_level_to_be_kept = models.DecimalField(max_digits=4, decimal_places=1, blank=True, null=True, default=9.0)
-    HB_level = models.DecimalField(max_digits=4, decimal_places=1, blank=True, null=True)
-    WBC_count = models.DecimalField(max_digits=8, decimal_places=1, blank=True, null=True)
+    pre_HB_level = models.DecimalField(max_digits=4, decimal_places=1, blank=True, null=True, default=9.0)
+    post_HB_level = models.DecimalField(max_digits=4, decimal_places=1, blank=True, null=True)
+    WBC_count = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
     platelet_count = models.DecimalField(max_digits=8, decimal_places=1, blank=True, null=True)
     amount_of_blood = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
     special_type = models.ForeignKey(

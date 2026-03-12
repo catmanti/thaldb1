@@ -5,8 +5,8 @@
                 <th>#</th>
                 <th>Admission Date</th>
                 <th>Transfusion Date</th>
-                <th>HB Level to be kept</th>
-                <th>HB Level</th>
+                <th>Pre-HB Level</th>
+                <th>Post-HB Level</th>
                 <th>Amount of Blood</th>
                 <th>Next Transfusion Date</th>
             </tr>
@@ -17,8 +17,8 @@
                     <th>{{ forloop.counter }}</th>
                     <td>{{ transfusion.admission.date_of_admission|date:"D d M Y" }}</td>
                     <td>{{ transfusion.date_of_transfusion|date:"D d M Y"|default:"N/A" }}</td>
-                    <td>{{ transfusion.HB_level_to_be_kept }}</td>
-                    <td>{{ transfusion.HB_level }}</td>
+                    <td>{{ transfusion.pre_HB_level }}</td>
+                    <td>{{ transfusion.post_HB_level }}</td>
                     <td>{{ transfusion.amount_of_blood }}</td>
                     <td>{{ transfusion.next_date_given|date:"D d M Y"|default:"N/A" }}</td>
                 </tr>

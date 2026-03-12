@@ -57,7 +57,7 @@ After recreating migrations and database, run:
 This loads `fixtures/lookup_seed.json` into the new database.
 
 ## TODO
-Add HB_level_to_be_kept in both client and Transfution (alrady added) models. Then programally add it to Transfution
+Add pre_HB_level in both client and Transfution (already added) models. Then programally add it to Transfution
 model from client model.
 Add same for:
     Amount_of_blood;

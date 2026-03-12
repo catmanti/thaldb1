@@ -30,3 +30,11 @@ exclude = '''
   | dist
 )/
 '''
+
+[tool.ruff]
+line-length = 120
+fix = true
+ignore = ["D101", "D102", "D103", "D104", "D105", "D106", "D107"]
+
+[tool.ruff.lint]
+ignore = ["D101", "D102", "D103", "D104", "D105", "D106", "D107"]

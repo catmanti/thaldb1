@@ -89,7 +89,22 @@ class Migration(migrations.Migration):
                 ('full_name', models.CharField(max_length=150)),
                 ('common_name', models.CharField(blank=True, max_length=100, null=True)),
                 ('gender', models.CharField(choices=[('M', 'Male'), ('F', 'Female')], max_length=1)),
-                ('ethnicity', models.CharField(blank=True, choices=[('Sinhalese', 'Sinhalese'), ('Tamil', 'Tamil'), ('SriLankanMoor', 'Sri Lankan Moor'), ('Burger', 'Burger'), ('Other', 'Other')], default='Sinhalese', max_length=100, null=True)),
+                (
+                    'ethnicity',
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ('Sinhalese', 'Sinhalese'),
+                            ('Tamil', 'Tamil'),
+                            ('SriLankanMoor', 'Sri Lankan Moor'),
+                            ('Burger', 'Burger'),
+                            ('Other', 'Other'),
+                        ],
+                        default='Sinhalese',
+                        max_length=100,
+                        null=True,
+                    ),
+                ),
                 ('date_of_birth', models.DateField(blank=True, null=True)),
                 ('blood_group', models.CharField(blank=True, choices=[('A+', 'A+'), ('A-', 'A-'), ('B+', 'B+'), ('B-', 'B-'), ('AB+', 'AB+'), ('AB-', 'AB-'), ('O+', 'O+'), ('O-', 'O-')], max_length=3, null=True)),
                 ('nic_number', models.CharField(blank=True, max_length=15, null=True, unique=True)),
